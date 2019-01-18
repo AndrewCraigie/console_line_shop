@@ -2,6 +2,7 @@ package models;
 
 import controllers.StockController;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -30,7 +31,6 @@ public class Picker {
         return basketStockLine;
 
     }
-
 
     public ArrayList<BasketStockLine> getBasketStockLinesList(boolean sort){
 
@@ -64,6 +64,15 @@ public class Picker {
             BasketStockLine basketStockLine = stockController.getBasketStockLine(productName, quantity);
             this.basket.addStockLine(basketStockLine, quantity);
         }
+
+    }
+
+    public BigDecimal basketSubTotal(){
+
+        return getBasketStockLines().stream()
+                .map(bsl -> bsl.lineTotal())
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
 
     }
 

@@ -54,6 +54,30 @@ public class PickerView {
 
     }
 
+    private String basketStockTableFoot(){
+
+        String basketItemsTotal = Integer.toString(this.picker.getBasket().itemCount());
+        BigDecimal basketTotalBD = this.picker.basketSubTotal();
+        String basketTotal = NumberFormat.getCurrencyInstance().format(basketTotalBD);
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(ConsoleUtil.fixedLengthString("", 3));
+        sb.append("  ");
+        sb.append(ConsoleUtil.fixedLengthString("", 8));
+        sb.append("  ");
+        sb.append(ConsoleUtil.fixedLengthString("", 6));
+        sb.append("    ");
+        sb.append(ConsoleUtil.fixedLengthString("", 8));
+        sb.append("  ");
+        sb.append(ConsoleUtil.fixedLengthString(basketItemsTotal, 4));  // quantity
+        sb.append("  ");
+        sb.append(ConsoleUtil.fixedLengthString(basketTotal, 6));   // line total
+
+        return sb.toString();
+
+    }
+
     private String basketStockLineTable(ArrayList<BasketStockLine> basketStockLines){
 
         StringBuilder sb = new StringBuilder();
@@ -64,6 +88,10 @@ public class PickerView {
             sb.append(basketStockLineTableRow(bsl));
             sb.append(LS);
         }
+
+        sb.append(basketStockTableFoot());
+
+
 
         return sb.toString();
     }
