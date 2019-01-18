@@ -62,7 +62,7 @@ public class TestBasket {
 
     @Test
     public void testCanAddStockLineItem(){
-        basket3.addStockLine(basketStockLine3);
+        basket3.addStockLine(basketStockLine3, 1);
         assertEquals(3, basket3.stockLineCount());
     }
 

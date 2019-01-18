@@ -14,8 +14,22 @@ public class Basket {
         this.basketStockLines = basketStockLines;
     }
 
-    public boolean addStockLine(BasketStockLine basketStockLine){
-        return this.basketStockLines.add(basketStockLine);
+    public boolean addStockLine(BasketStockLine basketStockLine, int quantity){
+
+        // Check if stock line is already in basket
+        BasketStockLine foundBasketStockLine = findStockLine(basketStockLine);
+
+        if(foundBasketStockLine != null){
+
+            // Basket already contains it
+            // increment quantity value
+            foundBasketStockLine.increaseQuantity(quantity);
+            return true;
+
+        } else {
+            return this.basketStockLines.add(basketStockLine);
+        }
+
     }
 
     public HashSet<BasketStockLine> getStockLines(){
@@ -52,6 +66,21 @@ public class Basket {
             }
         }
         return foundLine;
+    }
+
+    public BasketStockLine findStockLine(BasketStockLine basketStockLine){
+
+        BasketStockLine foundBasketStockLine = null;
+
+        if(this.basketStockLines.contains(basketStockLine)){
+            for(BasketStockLine bsl : this.basketStockLines){
+                if(bsl.equals(basketStockLine)){
+                    foundBasketStockLine = bsl;
+                }
+            }
+        }
+
+        return foundBasketStockLine;
     }
 
     public boolean removeStockLine(BasketStockLine basketStockItemToRemove) {

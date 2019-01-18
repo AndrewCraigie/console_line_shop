@@ -17,30 +17,60 @@ public class StockController {
 
     // Index
     public ArrayList<ShopStockLine> index(){
+
         return stockRepository.getAll();
+
     }
 
     // Index/productName
     public ShopStockLine getStockItemByProductName(String productName){
+
         return stockRepository.findByProductName(productName);
+
     }
 
     private BasketStockLine basketStockLineFromShopStockLine(ShopStockLine shopStockLine, int quantity){
 
         if(shopStockLine != null){
+
             ProductLine pl = shopStockLine.getProductLine();
             BasketStockLine basketStockLine = new BasketStockLine(pl, quantity);
             return basketStockLine;
+
         } else {
+
             return null;
+
         }
 
 
     }
 
+    private void reduceStockInStore(ShopStockLine shopStockLine, int quantity){
+
+        if(shopStockLine != null){
+            shopStockLine.decreaseQuantity(quantity);
+        }
+
+    }
+
+    private boolean isRequestedQuantityAvailable(ShopStockLine shopStockLine, int quantity){
+
+        boolean isAvailable = ((shopStockLine.stockQuantity() >= quantity) && (!shopStockLine.outOfStock()));
+        return isAvailable;
+
+    }
+
 
     public BasketStockLine getBasketStockLine(String productName, int quantity) {
+
         ShopStockLine shopStockLine = stockRepository.findByProductName(productName);
-        return basketStockLineFromShopStockLine(shopStockLine, quantity);
+        if(isRequestedQuantityAvailable(shopStockLine, quantity)){
+            reduceStockInStore(shopStockLine, quantity);
+            return basketStockLineFromShopStockLine(shopStockLine, quantity);
+        } else {
+            return null;
+        }
+
     }
 }

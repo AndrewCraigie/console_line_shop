@@ -1,11 +1,7 @@
 package models;
 
-
-import util.ConsoleUtil;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.text.NumberFormat;
 
 public class BasketStockLine extends StockLine implements Serializable {
 
@@ -27,30 +23,16 @@ public class BasketStockLine extends StockLine implements Serializable {
         return this.quantity < 1;
     }
 
-    public String consoleFriendlyToString(){
+    public BigDecimal lineTotal(){
 
-        ProductLine productLine = this.getProductLine();
+        BigDecimal lineTotal = BigDecimal.ZERO;
+        BigDecimal unitCost = this.getProductLine().getUnitCost();
+        BigDecimal quantityBD = new BigDecimal(this.stockQuantity());
 
-        String id = Integer.toString(productLine.getLineId());
-        String productName = productLine.getName();
-        String quantity = Integer.toString(this.quantity);
+        lineTotal = unitCost.multiply(quantityBD);
 
-        BigDecimal unitCost = productLine.getUnitCost();
-        String unitCostFormatted = NumberFormat.getCurrencyInstance().format(unitCost);
-
-        String unitName = productLine.getUnitName();
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(ConsoleUtil.fixedLengthString(id, 4));
-        sb.append("| ");
-        sb.append(ConsoleUtil.fixedLengthString(productName, 10));
-        sb.append("| ");
-        sb.append(ConsoleUtil.fixedLengthString(unitCostFormatted, 8));
-        sb.append("| ");
-        sb.append(unitName);
-
-        return sb.toString();
-
+        return lineTotal;
     }
+
 
 }

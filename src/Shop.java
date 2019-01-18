@@ -173,7 +173,7 @@ public class Shop {
 
         for(String arg : args){
 
-            defaultPicker.addBasketStockLineByProductName(arg);
+            defaultPicker.addBasketStockLineByProductName(arg, 1);
 
         }
     }
