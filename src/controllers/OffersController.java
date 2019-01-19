@@ -18,5 +18,9 @@ public class OffersController {
         return offersRepository.getAll();
     }
 
+    public ArrayList<ShopOffer> getAll(){
+        return index();
+    }
+
 
 }

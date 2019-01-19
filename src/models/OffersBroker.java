@@ -3,6 +3,8 @@ package models;
 import controllers.OffersController;
 import controllers.StockController;
 
+import java.util.ArrayList;
+
 public class OffersBroker {
 
     private StockController stockController;
@@ -26,6 +28,14 @@ public class OffersBroker {
         this.basket = basket;
     }
 
+
+
+
+
+    public ArrayList<ShopOffer> getValidOffers(){
+
+        return null;
+    }
 
 
 }
