@@ -14,6 +14,7 @@ public class SeedStock {
 
     }
 
+
     public static ArrayList<ShopStockLine> shopStockLines(){
 
         ArrayList<ShopStockLine> shopStockLines;

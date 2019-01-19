@@ -28,6 +28,9 @@ public class TestPicker {
     private OffersRepository offersRepository;
     private OffersController offersController;
 
+
+
+
     @Before
     public void setup(){
 
@@ -44,9 +47,9 @@ public class TestPicker {
         this.offersController = new OffersController(offersRepository);
 
         this.basket1 = new Basket();
+        this.picker1 = new Picker(stockController, offersController, basket1, new OffersBroker());
 
 
-        this.picker1 = new Picker(stockController, offersController, basket1);
     }
 
     @Test

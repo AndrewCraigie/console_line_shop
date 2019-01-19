@@ -5,6 +5,7 @@ import data.SeedStock;
 import data.StockStore;
 import controllers.StockController;
 import models.Basket;
+import models.OffersBroker;
 import models.Picker;
 import repositories.OffersRepository;
 import repositories.StockRepository;
@@ -167,7 +168,7 @@ public class Shop {
 
     private void initDefaultPicker() {
         defaultBasket = new Basket();
-        defaultPicker = new Picker(stockController, offersController, defaultBasket);
+        defaultPicker = new Picker(stockController, offersController, defaultBasket, new OffersBroker());
     }
 
     protected void populateDemoBasket(String[] args) {
