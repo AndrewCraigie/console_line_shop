@@ -26,6 +26,12 @@ public class OffersStore {
 
             oos.writeObject(this.shopOfferLines);
 
+        } catch (InvalidClassException e) {
+            System.out.println("InvalidClassExecption: " + e.getMessage());
+            return false;
+        } catch(NotSerializableException ex) {
+            System.out.println("A class could not be found during deserialization. " + ex.getMessage());
+            return false;
         } catch (IOException e) {
             System.out.println(e.getMessage());
             return false;
@@ -33,26 +39,92 @@ public class OffersStore {
         return true;
     }
 
-    public boolean deserializeStockLines() {
+    public Object deserializeOffersStoreDat(){
 
+        Object obj;
 
-        try (FileInputStream fis = new FileInputStream(dataFilePath);
+        try (FileInputStream fis = new FileInputStream(this.dataFilePath);
              ObjectInputStream ins = new ObjectInputStream(fis)) {
 
-            clearOfferLines();
+            obj = ins.readObject();
 
-            ArrayList<ShopOffer> inLines = (ArrayList<ShopOffer>) ins.readObject();
-            this.shopOfferLines = inLines;
+        } catch(OptionalDataException e){
+
+            System.out.println("Optional data found. " + e.getMessage());
+            return null;
+
+        } catch(StreamCorruptedException e) {
+
+            System.out.println("Serialized object got corrupted. " + e.getMessage());
+            return null;
+
+        } catch (ClassNotFoundException e) {
+
+            System.out.println("A class could not be found during deserialization. " + e.getMessage());
+            return null;
+
+        } catch (NotSerializableException ex){
+
+            ex.printStackTrace();
+            System.out.println("Object is not serializable: " + ex.getMessage());
+            return null;
 
         } catch (IOException e) {
-            System.out.println(e.getMessage());
-            return false;
-        } catch (ClassNotFoundException e) {
-            System.out.println(e.toString());
+
+            System.out.println("IO operation failed during serialization. " + e.getMessage());
+            return null;
+        }
+
+        return obj;
+
+    }
+
+    public ArrayList<ShopOffer> objectToShopOffers(Object obj){
+
+        ArrayList<ShopOffer> shopOffers;
+
+        try{
+
+            shopOffers = (ArrayList<ShopOffer>) obj;
+
+        } catch (ClassCastException e){
+            System.out.println("Class cast exception: " + e.getMessage());
+            return null;
+        }
+
+        return shopOffers;
+
+    }
+
+    public boolean deserializeStockLines() {
+
+        Object obj = deserializeOffersStoreDat();
+
+        ArrayList<ShopOffer> inLines = objectToShopOffers(obj);
+
+        if(inLines != null){
+            return true;
+        } else {
             return false;
         }
 
-        return true;
+//        try (FileInputStream fis = new FileInputStream(dataFilePath);
+//             ObjectInputStream ins = new ObjectInputStream(fis)) {
+//
+//            clearOfferLines();
+//
+//            ArrayList<ShopOffer> inLines = (ArrayList<ShopOffer>) ins.readObject();
+//            this.shopOfferLines = inLines;
+//
+//        } catch (IOException e) {
+//            System.out.println(e.getMessage());
+//            return false;
+//        } catch (ClassNotFoundException e) {
+//            System.out.println(e.toString());
+//            return false;
+//        }
+//
+//        return true;
 
     }
 

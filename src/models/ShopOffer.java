@@ -10,6 +10,7 @@ public class ShopOffer implements Serializable {
     private String name;
     private String description;
 
+
     public ShopOffer(){
         this.offerConditionLines = new ArrayList<>();
         this.discountLines = new ArrayList<>();

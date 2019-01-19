@@ -123,6 +123,7 @@ public class Shop {
         boolean offersDataSet = offersStore.deserializeStockLines();
 
         if(!offersDataSet){
+            System.out.println("Problem loading offers. Working with defaults.");
             offersStore.setOfferLines(SeedOffers.shopOfferLines());
         }
 

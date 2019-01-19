@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class TestOffersStore {
 
@@ -165,10 +164,18 @@ public class TestOffersStore {
 
     }
 
+    // Serializing from a test doesn't seem to work?
+
 //    @Test
 //    public void testOffersStoreSerializeOfferLinesTrue(){
+//
 //        offersStore1.setOfferLines(shopOffers);
-//        assertTrue(offersStore1.serializeOfferLines());
+//        assertEquals(2, offersStore1.offerLinesCount());
+//        String dataFilePath = offersStore1.getDataFilePath();
+//
+//        boolean serialized = offersStore1.serializeOfferLines();
+//        System.out.println(serialized);
+//        //assertTrue(serialized);
 //    }
 
 
