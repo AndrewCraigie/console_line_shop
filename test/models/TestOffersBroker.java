@@ -16,6 +16,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import static org.junit.Assert.assertEquals;
+
 public class TestOffersBroker {
 
     private String stockStorePath;
@@ -91,7 +93,7 @@ public class TestOffersBroker {
         // Create basketStockLines basket 1
         basketStockLine1 = new BasketStockLine(productLine1, 1); // Soup * 1
         basketStockLine2 = new BasketStockLine(productLine2, 1); // Bread * 1
-        basketStockLine3 = new BasketStockLine(productLine3, 1); // Milk * 1
+        basketStockLine3 = new BasketStockLine(productLine3, 1); // Apples * 1
 
         // Create set of basketStockLines
         basketStockLines = new HashSet<>();
@@ -117,7 +119,7 @@ public class TestOffersBroker {
         basketStockLines.add(basketStockLine3);
 
         // Create basket with basketStockLines
-        basket1 = new Basket(basketStockLines);
+        basket2 = new Basket(basketStockLines);
         // --------------------------------------------------------
 
 
@@ -127,6 +129,7 @@ public class TestOffersBroker {
         offersBroker1.setStockController(stockController);
         offersBroker1.setOffersController(offersController);
         offersBroker1.setBasket(basket1);
+        // Valid offers: apples
 
         offersBroker2.setStockController(stockController);
         offersBroker2.setOffersController(offersController);
@@ -134,6 +137,55 @@ public class TestOffersBroker {
 
 
     }
+
+    // Basket 1 contains soup, bread and milk
+    // Valid offers should be: bread_half_price
+    @Test
+    public void testOffersBroker1ValidOffersZero(){
+
+        ArrayList<ShopOffer> result = offersBroker1.getOffersForProducts();
+
+//        for(ShopOffer so : offersController.getAll() ){
+//            System.out.println(so.getName());
+//
+//        }
+//        System.out.println("----------");
+//        for(BasketStockLine bsl : basket1.getStockLines()){
+//            System.out.println(bsl.getProductLine().getName());
+//        }
+//        System.out.println("----------");
+//        for(ShopOffer so : result){
+//            System.out.println(so.getName());
+//        }
+
+        // Soup is in basket but not in sufficient quantities for offer
+        // to be valid
+        // so expected is zero
+        assertEquals(0, result.size());
+    }
+
+    // Basket 1 contains soup, bread and milk
+    // Valid offers should be: bread_half_price
+    @Test
+    public void testOffersBroker1ValidOffersOne(){
+
+        basket1.addItem("soup", 1);
+        // Basket now contains two soups
+        ArrayList<ShopOffer> result = offersBroker1.getOffersForProducts();
+
+        // Soup is in basket is now in sufficient quantity for offer to be valid
+        assertEquals(1, result.size());
+    }
+
+
+    // Basket 2 contains soup, bread and apples
+    // Valid offers should be: bread_half_price, apples_ten_percent_off
+    @Test
+    public void testOffersBroker2GetsApplesOffer(){
+        ArrayList<ShopOffer> result = offersBroker2.getOffersForProducts();
+        assertEquals(2, result.size());
+    }
+
 
 
 }

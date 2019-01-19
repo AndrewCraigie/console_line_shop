@@ -22,6 +22,11 @@ public class BasketOffers {
         return false;
     }
 
+    public void updateOffers(ArrayList<ShopOffer> offersToAdd){
+        clearOffers();
+        this.offers = offersToAdd;
+    }
+
     public ShopOffer findOffer(String offerName){
 
         ShopOffer foundOffer = null;
@@ -52,6 +57,14 @@ public class BasketOffers {
 
     public int offerCount(){
         return this.offers.size();
+    }
+
+    public void clearOffers(){
+        this.offers.clear();
+    }
+
+    public ArrayList<ShopOffer> getOffers(){
+        return this.offers;
     }
 
 

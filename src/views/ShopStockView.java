@@ -5,6 +5,7 @@ import models.ProductLine;
 import models.ShopStockLine;
 import util.ConsoleUtil;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class ShopStockView {
@@ -35,16 +36,25 @@ public class ShopStockView {
         sb.append("2 ----- Products List ------");
         sb.append(LS);
 
-        sb.append(idElement("ID"));
-        sb.append(nameElement("Name"));
-        sb.append(stockLevelElement("Stock Count"));
+        sb.append(ConsoleUtil.fixedLengthString("ID", 5));
+        sb.append(ConsoleUtil.fixedLengthString("Name", 10));
+        sb.append(ConsoleUtil.fixedLengthString("Unit Price", 13));
+        sb.append(ConsoleUtil.fixedLengthString("Unit Type", 10));
+        sb.append(ConsoleUtil.fixedLengthString("No. in stock", 12));
         sb.append(LS);
 
         for(ShopStockLine sl : shopStockItems){
+
             ProductLine pl = sl.getProductLine();
-            sb.append(idElement(String.valueOf(pl.getLineId())));
-            sb.append(nameElement(pl.getName()));
-            sb.append(stockLevelElement(String.valueOf(sl.stockQuantity())));
+            String unitPrice = NumberFormat.getCurrencyInstance().format(pl.getUnitCost());
+            String stockQuantity = String.valueOf(sl.stockQuantity());
+
+            sb.append(idElement(String.valueOf(pl.getLineId())));                   // ID
+            sb.append(nameElement(pl.getName()));                                   // Name
+            sb.append(ConsoleUtil.fixedLengthString(unitPrice, 8));          // Unit Price
+            sb.append(ConsoleUtil.fixedLengthString(" per ", 5));      // per
+            sb.append(ConsoleUtil.fixedLengthString(pl.getUnitName(), 10));  // Unit Name
+            sb.append(ConsoleUtil.fixedLengthString(stockQuantity, 5));      // No. in stock
             sb.append(LS);
         }
 

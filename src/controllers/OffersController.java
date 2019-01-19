@@ -23,4 +23,14 @@ public class OffersController {
     }
 
 
+    public ShopOffer findByOfferName(String offerName) {
+        return this.offersRepository.findByOfferName(offerName);
+    }
+
+
+    public ArrayList<ShopOffer> findOffersConditionProductName(String productName) {
+        return this.offersRepository.findOffersConditionProductName(productName);
+    }
+
+
 }

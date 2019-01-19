@@ -41,6 +41,14 @@ public class ShopOffer implements Serializable {
         return this.description;
     }
 
+    public ArrayList<ShopOfferLine> getOfferConditionLines(){
+        return this.offerConditionLines;
+    }
+
+    public ArrayList<ShopOfferLine> getDiscountLines(){
+        return this.discountLines;
+    }
+
     public boolean addShopOfferLine(ShopOfferLine shopOfferLine) {
         return this.offerConditionLines.add(shopOfferLine);
     }
@@ -224,6 +232,20 @@ public class ShopOffer implements Serializable {
     public boolean removeDiscountItem(String productName, int quantityToRemove) {
         ShopOfferLine lineToAddTo = this.findShopOfferLine(productName);
         return removeDiscountItem(lineToAddTo, quantityToRemove);
+    }
+
+    public boolean conditionsContainProductName(String productName){
+
+        boolean containsProductName = false;
+        for(ShopOfferLine sol : this.offerConditionLines){
+            String solProductName = sol.getProductLine().getName().toLowerCase();
+            String matchProductName = productName.toLowerCase();
+            if(solProductName.equals(matchProductName)){
+                containsProductName = true;
+            }
+        }
+
+        return containsProductName;
     }
 
 

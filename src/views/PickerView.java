@@ -3,6 +3,7 @@ package views;
 import models.BasketStockLine;
 import models.Picker;
 import models.ProductLine;
+import models.ShopOffer;
 import util.ConsoleUtil;
 
 import java.math.BigDecimal;
@@ -73,6 +74,21 @@ public class PickerView {
         sb.append(ConsoleUtil.fixedLengthString(basketItemsTotal, 4));  // quantity
         sb.append("  ");
         sb.append(ConsoleUtil.fixedLengthString(basketTotal, 6));   // line total
+        sb.append(LS);
+
+        // Show valid basket offers
+
+        sb.append("Offers valid for this basket");
+        sb.append(LS);
+
+        String validOffers = validBasketOffers();
+        if(validOffers.equals("")){
+            sb.append("(No offers available for this basket)");
+        } else {
+            sb.append(validOffers);
+        }
+        sb.append(LS);
+        sb.append("Hit 5 to calculate final basket price");
 
         return sb.toString();
 
@@ -108,6 +124,22 @@ public class PickerView {
         }
 
         sb.append(basketStockTableFoot());
+
+        return sb.toString();
+    }
+
+    private String validBasketOffers(){
+
+        StringBuilder sb = new StringBuilder();
+
+        // Tell picker to check offers
+        this.picker.addValidOffersToBasket();
+        ArrayList<ShopOffer> basketOffers = this.picker.getBasketOffers();
+
+        for(ShopOffer so : basketOffers){
+            sb.append(so.getDescription());
+            sb.append(LS);
+        }
 
         return sb.toString();
     }

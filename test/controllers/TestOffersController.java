@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class TestOffersController {
 
@@ -149,6 +150,18 @@ public class TestOffersController {
     public void testOffersControllerGetAll(){
         ArrayList<ShopOffer> result = offersController.getAll();
         assertEquals(3, result.size());
+    }
+
+    @Test
+    public void testOffersControllerFindByOfferName(){
+        ShopOffer result = offersController.findByOfferName("two_soups_free_loaf");
+        assertEquals("two_soups_free_loaf", result.getName());
+    }
+
+    @Test
+    public void testOffersControllerFindByConditionProductName(){
+        ArrayList<ShopOffer> result = offersController.findOffersConditionProductName("bread");
+        assertEquals(1, result.size());
     }
 
 

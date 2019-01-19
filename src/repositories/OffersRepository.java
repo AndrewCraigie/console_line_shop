@@ -4,6 +4,8 @@ import data.OffersStore;
 import models.ShopOffer;
 
 import java.util.ArrayList;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class OffersRepository {
 
@@ -34,7 +36,16 @@ public class OffersRepository {
     }
 
 
+    public ArrayList<ShopOffer> findOffersConditionProductName(String productName) {
 
+        ArrayList<ShopOffer> offersWithProductInConditionMatchingProductName = new ArrayList<>();
+        ArrayList<ShopOffer> offers = getAll();
 
+        offersWithProductInConditionMatchingProductName = offers.stream()
+                .filter(so -> so.conditionsContainProductName(productName) == true)
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        return offersWithProductInConditionMatchingProductName;
+    }
 
 }

@@ -17,21 +17,25 @@ public class Picker {
     private ArrayList<String> messages;
 
     private OffersBroker offersBroker;
+    private BasketOffers basketOffers;
 
     public Picker(StockController stockController,
                   OffersController offersController,
                   Basket basket,
-                  OffersBroker offersBroker){
+                  OffersBroker offersBroker,
+                  BasketOffers basketOffers){
 
         this.stockController = stockController;
         this.offersController = offersController;
         this.basket = basket;
+        this.basketOffers = basketOffers;
         this.messages = new ArrayList<>();
 
         this.offersBroker = offersBroker;
         this.offersBroker.setStockController(this.stockController);
         this.offersBroker.setOffersController(this.offersController);
         this.offersBroker.setBasket(this.basket);
+        this.offersBroker.setBasketOffers(this.basketOffers);
 
     }
 
@@ -118,6 +122,14 @@ public class Picker {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
 
+    }
+
+    public void addValidOffersToBasket(){
+        this.offersBroker.getOffersForProducts();
+    }
+
+    public ArrayList<ShopOffer> getBasketOffers(){
+        return this.basketOffers.getOffers();
     }
 
 
