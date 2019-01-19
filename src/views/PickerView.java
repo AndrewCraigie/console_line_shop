@@ -81,7 +81,7 @@ public class PickerView {
     private String basketStockLineTable(ArrayList<BasketStockLine> basketStockLines){
 
         StringBuilder sb = new StringBuilder();
-        sb.append("----- Basket Items -------");
+        sb.append("4 ----- Basket Items -------");
         sb.append(LS);
 
         for(BasketStockLine bsl : basketStockLines){

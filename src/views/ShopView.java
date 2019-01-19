@@ -33,34 +33,53 @@ public class ShopView {
         sb.append("                    | |    ");
         sb.append(LS);
         sb.append("                    |_|    ");
-        sb.append(LS);
+
         return sb.toString();
     }
 
     private String menu(){
         StringBuilder sb = new StringBuilder();
-        sb.append("================================");
+        sb.append("=================================");
         sb.append(LS);
-        sb.append("|          Shop Menu            |");
+        sb.append("|          Shop Menu             |");
         sb.append(LS);
-        sb.append("|  Options:                     |");
+        sb.append("|  Options:                      |");
         sb.append(LS);
-        sb.append("|     0. Exit Application       |");
+        sb.append("|     0. Exit Application        |");
         sb.append(LS);
-        sb.append("|     1. Show Products List     |");
+        sb.append("|     1. Instructions            |");
         sb.append(LS);
-        sb.append("|     2. Current Offers         |");
+        sb.append("|     2. Show Products List      |");
         sb.append(LS);
-        sb.append("|     3. Show Current Basket    |");
+        sb.append("|     3. Current Offers          |");
         sb.append(LS);
-        sb.append("|     4. Price Current Basket   |");
+        sb.append("|     4. Show Current Basket     |");
         sb.append(LS);
-        sb.append("|     5. Enter New Basket Items |");
+        sb.append("|     5. Price Current Basket    |");
         sb.append(LS);
-        sb.append("================================");
+        sb.append("|     6. Enter New Basket Items  |");
         sb.append(LS);
-        sb.append("Enter your choice (then hit enter):");
+        sb.append("=================================");
+        //sb.append(LS);
         return sb.toString();
+    }
+
+    private String welcome(){
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(" Welcome to the Shop");
+        sb.append(LS);
+        sb.append("1 ----- Instructions -----");
+        sb.append(LS);
+        sb.append(" Choose a view by typing a number on your keyboard");
+        sb.append(LS);
+        sb.append(" Hit Enter to show view");
+        sb.append(LS);
+        sb.append(" Enter 0 to exit");
+        sb.append(LS);
+
+        return sb.toString();
+
     }
 
     public void showHeader(){
@@ -80,29 +99,33 @@ public class ShopView {
                 // Exit
                 return;
             case 1:
+                // Show welcome
+                System.out.println(welcome());
+                break;
+            case 2:
                 // Show products list
                 System.out.println(shopStockView.listStock());
                 break;
-            case 2:
+            case 3:
                 // Show offers list
                 System.out.println(shopOffersView.listOffers());
                 break;
-            case 3:
+            case 4:
                 // Show current basket
                 System.out.println(pickerView.listBasketStockLines());
                 break;
-            case 4:
+            case 5:
                 // Price Current Basket
-                System.out.println("-----  Price Basket ------");
+                System.out.println("5 -----  Price Basket ------");
                 System.out.println("TODO calculate discounts create output");
                 break;
-            case 5:
+            case 6:
                 // Build new basket
-                System.out.println("------  New Basket ------");
+                System.out.println("6 ------  New Basket ------");
                 System.out.println("..loop and gather input");
 
                 break;
-            case 6:
+
 
 
         }

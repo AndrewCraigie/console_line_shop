@@ -32,7 +32,7 @@ public class ShopStockView {
 
     private String stockTable(){
         StringBuilder sb = new StringBuilder();
-        sb.append("----- Products List ------");
+        sb.append("2 ----- Products List ------");
         sb.append(LS);
 
         sb.append(idElement("ID"));

@@ -6,22 +6,24 @@ import data.StockStore;
 import controllers.StockController;
 import models.Basket;
 import models.Picker;
+import models.ShopOffer;
 import repositories.OffersRepository;
 import repositories.StockRepository;
+import util.FileUtils;
 import views.PickerView;
 import views.ShopOffersView;
 import views.ShopView;
 import views.ShopStockView;
 
 import java.nio.file.FileSystems;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 
 public class Shop {
 
     private static Shop shop = null;
-    private static final String STOCK_STORE = "stock_store.dat";
-    private static final String OFFERS_STORE = "offers_store.dat";
+
 
     private StockStore stockStore;
     private StockRepository stockRepository;
@@ -36,7 +38,6 @@ public class Shop {
     private ShopView shopView;
     private PickerView pickerView;
 
-    // TODO create basket controller
     public Picker defaultPicker;
     public Basket defaultBasket;
 
@@ -44,41 +45,37 @@ public class Shop {
 
     private int viewChoice = 0;
 
-    public Shop(){
+    public Shop() {
         // TODO allow initialization with config file
     }
 
-    public static Shop getInstance(){
+    public static Shop getInstance() {
 
-        if(shop == null){
+        if (shop == null) {
             shop = new Shop();
         }
 
         return shop;
     }
 
-    private String getStockStorePath(){
+    private String getStockStorePath() {
 
-        String projectPath = System.getProperty("user.dir");
-        String separator = FileSystems.getDefault().getSeparator();
-        return projectPath + separator + STOCK_STORE;
+        return FileUtils.storePath(ShopRunner.STOCK_STORE);
 
     }
 
-    private String getOffersStorePath(){
+    private String getOffersStorePath() {
 
-        String projectPath = System.getProperty("user.dir");
-        String separator = FileSystems.getDefault().getSeparator();
-        return projectPath + separator + OFFERS_STORE;
+        return FileUtils.storePath(ShopRunner.OFFERS_STORE);
 
     }
 
-    private void persistDataStores(){
+    private void persistDataStores() {
         stockStore.serializeStockLines();
         offersStore.serializeOfferLines();
     }
 
-    private void stop(){
+    private void stop() {
 
         // Save stores before exiting
         System.out.println("Saving Stock Data...");
@@ -89,12 +86,14 @@ public class Shop {
         System.exit(0);
     }
 
-    protected void run(){
+    protected void run(int startView) {
+
+        viewChoice = startView;
 
         shopView.showHeader();
-        shopView.showMenu();
+        shopView.show(viewChoice);
 
-        do{
+        do {
 
             viewChoice = scanner.nextInt();
             shopView.show(viewChoice);
@@ -105,81 +104,85 @@ public class Shop {
 
     }
 
-    private void initStockStore(String stockStoreDataFile){
+    private void initStockStore(String stockStoreDataFile) {
 
         stockStore = new StockStore(stockStoreDataFile);
         boolean storeDataSet = stockStore.deserializeStockLines();
 
-        if(!storeDataSet){
+        if (!storeDataSet) {
             // In case file cannot be accessed/deserialized
             stockStore.setStockLines(SeedStock.shopStockLines());
+        } else {
+            System.out.println("Shop Stock Loaded successfully...");
         }
 
     }
 
-    private void initOffersStore(String offersStoreDataFile){
+    private void initOffersStore(String offersStoreDataFile) {
 
         offersStore = new OffersStore(offersStoreDataFile);
         boolean offersDataSet = offersStore.deserializeStockLines();
 
-        if(!offersDataSet){
+        if(offersDataSet){
+            System.out.println("Shop offers loaded successfully...");
+        } else {
             System.out.println("Problem loading offers. Working with defaults.");
             offersStore.setOfferLines(SeedOffers.shopOfferLines());
         }
 
     }
 
-    private void initStockRepository(){
+    private void initStockRepository() {
         stockRepository = new StockRepository(stockStore);
     }
 
-    private void initOffersRepository(){
+    private void initOffersRepository() {
         offersRepository = new OffersRepository(offersStore);
     }
 
-    private void initStockController(){
+    private void initStockController() {
         stockController = new StockController(stockRepository);
     }
 
-    private void initOffersController(){
+    private void initOffersController() {
         offersController = new OffersController(offersRepository);
     }
 
-    private void initStockView(){
+    private void initStockView() {
         shopStockView = new ShopStockView(stockController);
     }
 
-    private void initShopOffersView(){
+    private void initShopOffersView() {
         shopOffersView = new ShopOffersView(offersController);
     }
 
-    private void initPickerView(){
+    private void initPickerView() {
         pickerView = new PickerView(defaultPicker);
     }
 
-    private void initShopView(){
+    private void initShopView() {
         shopView = new ShopView(shopStockView, shopOffersView, pickerView);
     }
 
-    private void initScanner(){
+    private void initScanner() {
         scanner = new Scanner(System.in);
     }
 
-    private void initDefaultPicker(){
+    private void initDefaultPicker() {
         defaultBasket = new Basket();
         defaultPicker = new Picker(stockController, offersController, defaultBasket);
     }
 
-    protected void populateDemoBasket(String[] args){
+    protected void populateDemoBasket(String[] args) {
 
-        for(String arg : args){
+        for (String arg : args) {
 
             defaultPicker.addBasketStockLineByProductName(arg, 1);
 
         }
     }
 
-    public void shopInit(){
+    public void shopInit() {
 
         String stockStoreDataFile = getStockStorePath();
         String offersStoreDataFile = getOffersStorePath();

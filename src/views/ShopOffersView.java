@@ -22,12 +22,13 @@ public class ShopOffersView {
     public String offersTable(){
 
         StringBuilder sb = new StringBuilder();
-        sb.append("----- Current Offers  -----");
+        sb.append("3 ----- Current Offers  -----");
         sb.append(LS);
 
         for(ShopOffer so : shopOffers){
             //sb.append(so.getName());
             //sb.append(":  ");
+            sb.append("* ");
             sb.append(so.getDescription());
             sb.append(LS);
         }

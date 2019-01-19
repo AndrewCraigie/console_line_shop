@@ -103,6 +103,7 @@ public class OffersStore {
         ArrayList<ShopOffer> inLines = objectToShopOffers(obj);
 
         if(inLines != null){
+            setOfferLines(inLines);
             return true;
         } else {
             return false;
