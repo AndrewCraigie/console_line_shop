@@ -14,12 +14,14 @@ public class Picker {
     private StockController stockController;
     private OffersController offersController;
     private Basket basket;
+    private ArrayList<String> messages;
 
     public Picker(StockController stockController, OffersController offersController, Basket basket){
 
         this.stockController = stockController;
         this.offersController = offersController;
         this.basket = basket;
+        this.messages = new ArrayList<>();
 
     }
 
@@ -53,7 +55,9 @@ public class Picker {
 
     }
 
-    public void addBasketStockLineByProductName(String productName, int quantity){
+    public String addBasketStockLineByProductName(String productName, int quantity){
+
+        String msg = "";
 
         // Get basket stock line by product name
         BasketStockLine existingBasketStockLine = this.basket.findStockLine(productName);
@@ -63,11 +67,38 @@ public class Picker {
             // Increment its quantity
             existingBasketStockLine.increaseQuantity(quantity);
         } else {
+
             // It doesn't exist so create one and add it to basket
             BasketStockLine basketStockLine = stockController.getBasketStockLine(productName, quantity);
-            this.basket.addStockLine(basketStockLine, quantity);
+            // If it isn't a stock item then will return null
+            if(basketStockLine == null){
+                msg = "This shop does not sell " + productName;
+            } else {
+                this.basket.addStockLine(basketStockLine, quantity);
+            }
+
         }
 
+        return msg;
+
+    }
+
+    public void addBasketStockLines(String[] productNames){
+
+        this.messages.clear();
+
+        for(String product : productNames){
+            String result = addBasketStockLineByProductName(product, 1);
+
+            if(!result.equals("")){
+                this.messages.add(result);
+            }
+        }
+
+    }
+
+    public ArrayList<String> getMessages(){
+        return this.messages;
     }
 
     public BigDecimal basketSubTotal(){
@@ -78,6 +109,8 @@ public class Picker {
 
 
     }
+
+
 
 
 }

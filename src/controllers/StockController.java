@@ -43,7 +43,6 @@ public class StockController {
 
         }
 
-
     }
 
     private void reduceStockInStore(ShopStockLine shopStockLine, int quantity){
@@ -61,15 +60,20 @@ public class StockController {
 
     }
 
-
     public BasketStockLine getBasketStockLine(String productName, int quantity) {
 
         ShopStockLine shopStockLine = stockRepository.findByProductName(productName);
-        if(isRequestedQuantityAvailable(shopStockLine, quantity)){
-            reduceStockInStore(shopStockLine, quantity);
-            return basketStockLineFromShopStockLine(shopStockLine, quantity);
-        } else {
+
+        // If it wasn't found then shopStockLine will be null
+        if(shopStockLine == null){
             return null;
+        } else {
+            if(isRequestedQuantityAvailable(shopStockLine, quantity)){
+                reduceStockInStore(shopStockLine, quantity);
+                return basketStockLineFromShopStockLine(shopStockLine, quantity);
+            } else {
+                return null;
+            }
         }
 
     }

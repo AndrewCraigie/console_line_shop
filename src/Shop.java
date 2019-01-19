@@ -6,7 +6,6 @@ import data.StockStore;
 import controllers.StockController;
 import models.Basket;
 import models.Picker;
-import models.ShopOffer;
 import repositories.OffersRepository;
 import repositories.StockRepository;
 import util.FileUtils;
@@ -15,8 +14,6 @@ import views.ShopOffersView;
 import views.ShopView;
 import views.ShopStockView;
 
-import java.nio.file.FileSystems;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -175,11 +172,8 @@ public class Shop {
 
     protected void populateDemoBasket(String[] args) {
 
-        for (String arg : args) {
+        defaultPicker.addBasketStockLines(args);
 
-            defaultPicker.addBasketStockLineByProductName(arg, 1);
-
-        }
     }
 
     public void shopInit() {

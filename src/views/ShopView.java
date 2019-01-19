@@ -1,5 +1,7 @@
 package views;
 
+import util.ConsoleUtil;
+
 public class ShopView {
 
     private static final String LS = System.lineSeparator();
@@ -92,7 +94,7 @@ public class ShopView {
 
     public void show(int choice){
 
-        //ConsoleUtil.clearConsole();
+        ConsoleUtil.clearConsole();
         showMenu();
         switch (choice) {
             case 0:
@@ -123,13 +125,9 @@ public class ShopView {
                 // Build new basket
                 System.out.println("6 ------  New Basket ------");
                 System.out.println("..loop and gather input");
-
                 break;
 
-
-
         }
-
 
     }
 

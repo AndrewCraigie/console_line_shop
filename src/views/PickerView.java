@@ -78,6 +78,24 @@ public class PickerView {
 
     }
 
+    private String pickerMessages(){
+
+        StringBuilder sb = new StringBuilder();
+
+        ArrayList<String> pickerMessages = picker.getMessages();
+        if(pickerMessages.size() > 0){
+            for(String msg : pickerMessages){
+                sb.append(msg);
+                sb.append(LS);
+            }
+        } else {
+            return "";
+        }
+
+        return sb.toString();
+
+    }
+
     private String basketStockLineTable(ArrayList<BasketStockLine> basketStockLines){
 
         StringBuilder sb = new StringBuilder();
@@ -90,8 +108,6 @@ public class PickerView {
         }
 
         sb.append(basketStockTableFoot());
-
-
 
         return sb.toString();
     }
@@ -114,6 +130,8 @@ public class PickerView {
         } else {
             basketStockLinesList = "The Basket is empty.";
         }
+
+        basketStockLinesList += LS + pickerMessages();
 
         return basketStockLinesList;
 
