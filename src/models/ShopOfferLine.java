@@ -1,6 +1,8 @@
 package models;
 
-public class ShopOfferLine extends StockLine {
+import java.io.Serializable;
+
+public class ShopOfferLine extends StockLine implements Serializable {
 
     public ShopOfferLine(){
         super();

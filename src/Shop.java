@@ -166,7 +166,7 @@ public class Shop {
 
     private void initDefaultPicker(){
         defaultBasket = new Basket();
-        defaultPicker = new Picker(stockController, defaultBasket);
+        defaultPicker = new Picker(stockController, offersController, defaultBasket);
     }
 
     protected void populateDemoBasket(String[] args){

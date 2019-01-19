@@ -23,7 +23,9 @@ public class OffersStore {
 
         try (FileOutputStream fos = new FileOutputStream(dataFilePath);
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+
             oos.writeObject(this.shopOfferLines);
+
         } catch (IOException e) {
             System.out.println(e.getMessage());
             return false;
@@ -53,6 +55,7 @@ public class OffersStore {
         return true;
 
     }
+
 
     public void clearOfferLines() {
         this.shopOfferLines.clear();
@@ -86,14 +89,14 @@ public class OffersStore {
         return foundOffer;
     }
 
-    public boolean save(ShopOffer shopOfferLine) {
-        shopOfferLines.add(shopOfferLine);
+    public boolean save(ShopOffer shopOffer) {
+        shopOfferLines.add(shopOffer);
         return true;
     }
 
-    public boolean remove(ShopOffer shopOfferLine) {
-        if (shopOfferLines.contains(shopOfferLine)) {
-            shopOfferLines.remove(shopOfferLine);
+    public boolean remove(ShopOffer shopOffer) {
+        if (shopOfferLines.contains(shopOffer)) {
+            shopOfferLines.remove(shopOffer);
             return true;
         } else {
             return false;

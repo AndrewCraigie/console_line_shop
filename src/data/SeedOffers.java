@@ -7,7 +7,6 @@ import util.FileUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class SeedOffers {
 
@@ -30,10 +29,10 @@ public class SeedOffers {
         appleLine = new ShopOfferLine(apple, 1);
         appleDiscountLine = new ShopOfferLine(appleDiscount, 1);
 
-        HashSet<ShopOfferLine> appleOfferConditionLine = new HashSet<>();
+        ArrayList<ShopOfferLine> appleOfferConditionLine = new ArrayList<>();
         appleOfferConditionLine.add(appleLine);
 
-        HashSet<ShopOfferLine> appleDiscountLines = new HashSet<>();
+        ArrayList<ShopOfferLine> appleDiscountLines = new ArrayList<>();
         appleDiscountLines.add(appleDiscountLine);
 
         ShopOffer appleOffer = new ShopOffer("apples_ten_percent_off",
@@ -57,10 +56,10 @@ public class SeedOffers {
         soupLine = new ShopOfferLine(soup, 2);
         breadDiscountLine = new ShopOfferLine(breadDiscount, 1);
 
-        HashSet<ShopOfferLine> soupConditionLine = new HashSet<>();
+        ArrayList<ShopOfferLine> soupConditionLine = new ArrayList<>();
         soupConditionLine.add(soupLine);
 
-        HashSet<ShopOfferLine> breadDiscountOfferLine = new HashSet<>();
+        ArrayList<ShopOfferLine> breadDiscountOfferLine = new ArrayList<>();
         breadDiscountOfferLine.add(breadDiscountLine);
 
         ShopOffer breadOffer = new ShopOffer("bread_half_price",

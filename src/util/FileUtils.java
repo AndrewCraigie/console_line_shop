@@ -6,19 +6,24 @@ import java.nio.file.FileSystems;
 public class FileUtils {
 
     public static String stockStorePath(){
-        String projectPath = System.getProperty("user.dir");
-        String separator = FileSystems.getDefault().getSeparator();
-        String testDatFileName = "stock_store.dat";
-        String dataFilePath1 = projectPath + separator + testDatFileName;
-        return dataFilePath1;
+
+        return storePath("stock_store.dat");
+
     }
 
     public static String offersStorePath(){
+
+        return storePath("offers_store.dat");
+
+    }
+
+    public static String storePath(String fileName){
+
         String projectPath = System.getProperty("user.dir");
         String separator = FileSystems.getDefault().getSeparator();
-        String testDatFileName = "offers_store.dat";
-        String dataFilePath1 = projectPath + separator + testDatFileName;
-        return dataFilePath1;
+
+        return projectPath + separator + fileName;
+
     }
 
     public static boolean fileExists(String filePath){

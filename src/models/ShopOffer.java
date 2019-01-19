@@ -1,25 +1,31 @@
 package models;
 
-import java.util.HashSet;
+import java.io.Serializable;
+import java.util.ArrayList;
 
-public class ShopOffer {
+public class ShopOffer implements Serializable {
 
-    private HashSet<ShopOfferLine> offerConditionLines;
-    private HashSet<ShopOfferLine> discountLines;
+    private ArrayList<ShopOfferLine> offerConditionLines;
+    private ArrayList<ShopOfferLine> discountLines;
     private String name;
     private String description;
+
+    public ShopOffer(){
+        this.offerConditionLines = new ArrayList<>();
+        this.discountLines = new ArrayList<>();
+    }
 
     public ShopOffer(String name, String description) {
         this.name = name;
         this.description = description;
-        this.offerConditionLines = new HashSet<>();
-        this.discountLines = new HashSet<>();
+        this.offerConditionLines = new ArrayList<>();
+        this.discountLines = new ArrayList<>();
     }
 
     public ShopOffer(String name,
                      String description,
-                     HashSet<ShopOfferLine> offerConditionLines,
-                     HashSet<ShopOfferLine> discountLines) {
+                     ArrayList<ShopOfferLine> offerConditionLines,
+                     ArrayList<ShopOfferLine> discountLines) {
         this.name = name;
         this.description = description;
         this.offerConditionLines = offerConditionLines;
@@ -73,7 +79,6 @@ public class ShopOffer {
         }
         return foundOfferLine;
     }
-
 
     public ShopOfferLine findDiscountLine(int productId) {
         ShopOfferLine foundDiscountLine = null;

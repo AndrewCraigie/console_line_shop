@@ -1,5 +1,6 @@
 package models;
 
+import controllers.OffersController;
 import controllers.StockController;
 
 import java.math.BigDecimal;
@@ -11,11 +12,13 @@ import java.util.HashSet;
 public class Picker {
 
     private StockController stockController;
+    private OffersController offersController;
     private Basket basket;
 
-    public Picker(StockController stockController, Basket basket){
+    public Picker(StockController stockController, OffersController offersController, Basket basket){
 
         this.stockController = stockController;
+        this.offersController = offersController;
         this.basket = basket;
 
     }

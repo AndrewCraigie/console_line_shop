@@ -6,7 +6,6 @@ import util.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import java.math.BigDecimal;
-import java.nio.file.FileSystems;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
@@ -19,10 +18,7 @@ public class TestStockStore {
     private ShopStockLine stockLine1;
     private ShopStockLine stockLine2;
 
-    private String projectPath = System.getProperty("user.dir");
-    private String separator = FileSystems.getDefault().getSeparator();
-    private String testDatFileName = "stock_store_test.dat";
-    private String dataFilePath1 = projectPath + separator + testDatFileName;
+    private String dataFilePath1 = FileUtils.storePath("stock_store_test.dat");
 
     private StockStore stockStore2;
 
