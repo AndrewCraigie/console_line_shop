@@ -45,14 +45,6 @@ public class StockController {
 
     }
 
-    private void reduceStockInStore(ShopStockLine shopStockLine, int quantity){
-
-        if(shopStockLine != null){
-            shopStockLine.decreaseQuantity(quantity);
-        }
-
-    }
-
     public boolean isRequestedQuantityAvailable(ShopStockLine shopStockLine, int quantity){
 
         boolean isAvailable = ((shopStockLine.stockQuantity() >= quantity) && (!shopStockLine.outOfStock()));
@@ -77,4 +69,26 @@ public class StockController {
         }
 
     }
+
+    public void increaseStockInStore(String productName, int quantity){
+
+        ShopStockLine shopStockLine = getStockItemByProductName(productName);
+        if(shopStockLine != null){
+            shopStockLine.increaseQuantity(quantity);
+        }
+
+    }
+
+    private void reduceStockInStore(ShopStockLine shopStockLine, int quantity){
+
+        if(shopStockLine != null){
+            shopStockLine.decreaseQuantity(quantity);
+        }
+
+    }
+
+    public void reStockShop(){
+        this.stockRepository.reStockShop();
+    }
+
 }

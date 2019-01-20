@@ -14,6 +14,8 @@ import views.ShopOffersView;
 import views.ShopStockView;
 import views.ShopView;
 
+import java.util.ArrayList;
+
 public class Shop {
 
     private static Shop shop = null;
@@ -140,6 +142,10 @@ public class Shop {
 
         defaultPicker.addBasketStockLines(args);
 
+    }
+
+    public void reStockShop(){
+        stockController.reStockShop();
     }
 
     public void shopInit(String shopStore, String offersStore) {

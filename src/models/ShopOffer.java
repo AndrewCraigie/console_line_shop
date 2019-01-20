@@ -199,7 +199,12 @@ public class ShopOffer implements Serializable {
 
     public boolean removeShopOfferItem(ShopOfferLine lineToRemoveFrom, int quantityToRemove) {
         if (lineToRemoveFrom != null) {
-            return lineToRemoveFrom.decreaseQuantity(quantityToRemove);
+            int amountDecreased = lineToRemoveFrom.decreaseQuantity(quantityToRemove);
+            if(amountDecreased > 0 ){
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
@@ -218,7 +223,12 @@ public class ShopOffer implements Serializable {
 
     public boolean removeDiscountItem(ShopOfferLine lineToRemoveFrom, int quantityToRemove) {
         if (lineToRemoveFrom != null) {
-            return lineToRemoveFrom.decreaseQuantity(quantityToRemove);
+            int amountDecreased = lineToRemoveFrom.decreaseQuantity(quantityToRemove);
+            if(amountDecreased > 0 ){
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }

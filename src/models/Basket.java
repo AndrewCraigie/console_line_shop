@@ -1,6 +1,8 @@
 package models;
 
 import java.util.HashSet;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class Basket {
 
@@ -104,6 +106,14 @@ public class Basket {
 
     }
 
+    public long itemCountByProductName(String productName){
+
+        return this.basketStockLines.stream()
+                .filter(bsl -> bsl.getProductLine().getName().toLowerCase().equals(productName))
+                .collect(Collectors.counting());
+
+    }
+
     public boolean addItem(BasketStockLine lineToAddTo, int quantityToAdd){
         if(lineToAddTo != null){
             lineToAddTo.increaseQuantity(quantityToAdd);
@@ -140,24 +150,26 @@ public class Basket {
     }
 
 
-    public boolean removeItem(BasketStockLine lineToRemoveFrom, int quantityToRemove){
+    public int removeItem(BasketStockLine lineToRemoveFrom, int quantityToRemove){
+
+        int amountDecreased = 0;
 
         if(lineToRemoveFrom != null){
-            boolean decreased = lineToRemoveFrom.decreaseQuantity(quantityToRemove);
+            amountDecreased = lineToRemoveFrom.decreaseQuantity(quantityToRemove);
             checkStockLineForRemoval(lineToRemoveFrom);
-            return decreased;
-        } else {
-            return false;
+
         }
+
+        return amountDecreased;
 
     }
 
-    public boolean removeItem(int productId, int quantityToRemove){
+    public int removeItem(int productId, int quantityToRemove){
         BasketStockLine lineToAddTo = this.findStockLine(productId);
         return removeItem(lineToAddTo, quantityToRemove);
     }
 
-    public boolean removeItem(String productName, int quantityToRemove){
+    public int removeItem(String productName, int quantityToRemove){
         BasketStockLine lineToAddTo = this.findStockLine(productName);
         return removeItem(lineToAddTo, quantityToRemove);
     }
@@ -166,4 +178,6 @@ public class Basket {
     public void clearBasketStockLines() {
         this.basketStockLines.clear();
     }
+
+
 }

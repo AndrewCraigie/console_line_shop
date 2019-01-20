@@ -114,8 +114,7 @@ public class PickerView {
     private String basketStockLineTable(ArrayList<BasketStockLine> basketStockLines){
 
         StringBuilder sb = new StringBuilder();
-        sb.append("4 ----- Basket Items -------");
-        sb.append(LS);
+
 
         for(BasketStockLine bsl : basketStockLines){
             sb.append(basketStockLineTableRow(bsl));
@@ -143,6 +142,29 @@ public class PickerView {
         return sb.toString();
     }
 
+    public String basketInstructions(){
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("4 ----- Basket Items -------");
+        sb.append(LS);
+        sb.append("Basket Instructions: (Enter commands as below)");
+        sb.append(LS);
+        sb.append(" - clear 'clears the basket'");
+        sb.append(LS);
+        sb.append(" - To add an item enter:           productName:quantity");
+        sb.append(LS);
+        sb.append("   e.g. to add 4 apples enter:     apples:4");
+        sb.append(LS);
+        sb.append(" - to remove an item enter         productName:-quantity");
+        sb.append(LS);
+        sb.append("   e.g. to remove 2 apples enter:  apples:-2");
+        sb.append(LS);
+        sb.append(LS);
+
+        return sb.toString();
+
+    }
+
     public String listBasketStockLines(){
 
         String basketStockLinesList;
@@ -150,16 +172,23 @@ public class PickerView {
         ArrayList<BasketStockLine> basketStockLines;
         basketStockLines = this.picker.getBasketStockLinesList(true);
 
+        // TODO add basket add/remove/clear instructions
+        basketStockLinesList = basketInstructions();
+
         if(basketStockLines != null){
             if(basketStockLines.size() > 0){
 
-                basketStockLinesList = basketStockLineTable(basketStockLines);
+                basketStockLinesList += basketStockLineTable(basketStockLines);
 
             } else {
-                basketStockLinesList = "The Basket is empty.";
+
+                basketStockLinesList += "The Basket is empty.";
+
             }
         } else {
-            basketStockLinesList = "The Basket is empty.";
+
+            basketStockLinesList += "The Basket is empty.";
+
         }
 
         basketStockLinesList += LS + pickerMessages();

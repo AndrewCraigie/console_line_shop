@@ -125,6 +125,10 @@ public class StockStore  {
         return shopStockLines.size();
     }
 
-
-
+    public void reStockShop() {
+        for(ShopStockLine ssl : this.shopStockLines){
+            ssl.increaseQuantity(10);
+        }
+        serializeStockLines();
+    }
 }

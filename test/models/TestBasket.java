@@ -135,9 +135,15 @@ public class TestBasket {
     }
 
     @Test
-    public void testBasketDecrementFalse(){
-        boolean result = basket3.removeItem(basketStockLine1, 3);
-        assertFalse(result);
+    public void testBasketItemCountByProductName(){
+        long itemCount = basket3.itemCountByProductName("soup");
+        assertEquals(1, itemCount);
     }
+
+//    @Test
+//    public void testBasketDecrementFalse(){
+//        boolean result = basket3.removeItem(basketStockLine1, 3);
+//        assertFalse(result);
+//    }
 
 }

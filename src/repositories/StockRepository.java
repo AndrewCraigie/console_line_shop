@@ -40,5 +40,9 @@ public class StockRepository {
         return stockStore.stockLinesCount();
     }
 
+    public void reStockShop(){
+
+        this.stockStore.reStockShop();
+    }
 
 }

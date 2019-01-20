@@ -89,6 +89,7 @@ public class Picker {
                 if(existingBasketStockLine != null){
                     // Increment its quantity
                     existingBasketStockLine.increaseQuantity(quantity);
+                    shopStockLine.decreaseQuantity(quantity);
                 } else {
 
                     // It doesn't exist so create one and add it to basket
@@ -124,8 +125,15 @@ public class Picker {
         this.basket.clearBasketStockLines();
     }
 
-    public boolean removeItemFromBasket(String productName, int quantityToRemove){
-        return this.basket.removeItem(productName, quantityToRemove);
+    public int removeItemFromBasket(String productName, int quantityToRemove){
+
+        int numberRemoved = this.basket.removeItem(productName, quantityToRemove);
+        //System.out.println("Number removed from basket: " + numberRemoved);
+
+        // Restock shop with removed items
+        this.stockController.increaseStockInStore(productName, numberRemoved);
+
+        return numberRemoved;
     }
 
     public void addMessage(String msg){
@@ -173,11 +181,17 @@ public class Picker {
         return this.basketOffers.getOffers();
     }
 
-    // TODO methods to calculate basket total accounting for discounts
+    public void priceBasket() {
+
+        // Work out totals and discounts
+        OffersCalculator offersCalculator = new OffersCalculator(this.basket, this.basketOffers);
+        System.out.println(offersCalculator.report());
+        System.out.println(offersCalculator.calculate());
 
 
 
 
+    }
 
 
 }

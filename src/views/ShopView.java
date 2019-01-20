@@ -95,7 +95,7 @@ public class ShopView {
         sb.append(LS);
         sb.append("|     5. Price Current Basket    |");
         sb.append(LS);
-        sb.append("|     6. Enter New Basket Items  |");
+        sb.append("|     6. Re-stock shop           |");
         sb.append(LS);
         sb.append("=================================");
         //sb.append(LS);
@@ -189,24 +189,29 @@ public class ShopView {
 
                 // If choice is menu digit then show
                 if(isMenuDigit){
-                    System.out.println("Is menu digit");
+
+                    // Show that view
                     show(shop, command, scanner);
+
                 } else {
+
                     // If not menu digit then do command
                     switch(command){
                         case "end":
-                            System.out.println("end");
+
                             scanner.reset();
                             viewChoice = "4";
                             show(shop, viewChoice, scanner);
                             break;
+
                         case "clear":
-                            System.out.println("clear");
+
                             shop.defaultPicker.clearBasket();
                             scanner.reset();
                             viewChoice = "4";
                             show(shop, viewChoice, scanner);
                             break;
+
                         default:
 
                             // Add or remove product based on command and quantity
@@ -216,7 +221,7 @@ public class ShopView {
 
                                 quantity = Integer.parseInt(value);
 
-                                System.out.println("Quantity is: " + quantity);
+                                //System.out.println("Quantity is: " + quantity);
 
                                 if(quantity > 0){
 
@@ -239,26 +244,18 @@ public class ShopView {
                 }
 
 
-
-
                 break;
             case "5":
                 // Price Current Basket
-                // TODO calculate basket totals and output
                 System.out.println("5 -----  Price Basket ------");
-                System.out.println("TODO calculate discounts create output");
+                shop.defaultPicker.priceBasket();
 
                 break;
             case "6":
-                // Build new basket
-                // TODO create loop to build new basket
-                System.out.println("6 ------  New Basket ------");
-                System.out.println("..loop and gather input");
-
-
-
-
-
+                // re-stock shop
+                shop.reStockShop();
+                System.out.println("6 ----- Shop Re-stocked ---");
+                System.out.println("Enter a menu number");
                 break;
 
         }
