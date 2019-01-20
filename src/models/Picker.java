@@ -2,8 +2,7 @@ package models;
 
 import controllers.OffersController;
 import controllers.StockController;
-import javafx.beans.binding.StringBinding;
-import util.ConsoleUtil;
+
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,6 +20,10 @@ public class Picker {
 
     private OffersBroker offersBroker;
     private BasketOffers basketOffers;
+
+    private Discounts discounts;
+
+    private BigDecimal total = BigDecimal.ZERO;
 
     public Picker(StockController stockController,
                   OffersController offersController,
@@ -173,6 +176,25 @@ public class Picker {
 
     }
 
+    public BigDecimal basketTotal(){
+
+        BigDecimal subTotalBeforeDiscounts = basketSubTotal();
+        BigDecimal discountTotal = BigDecimal.ZERO;
+
+        if(this.discounts != null){
+            if(this.discounts.countDiscounts() > 0){
+
+                discountTotal = this.discounts.getDiscounts().stream()
+                        .map(dl -> dl.getAmount())
+                        .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            }
+        }
+
+        return subTotalBeforeDiscounts.subtract(discountTotal);
+
+    }
+
     public void addValidOffersToBasket(){
         this.offersBroker.getOffersForProducts();
     }
@@ -185,12 +207,17 @@ public class Picker {
 
         // Work out totals and discounts
         OffersCalculator offersCalculator = new OffersCalculator(this.basket, this.basketOffers);
-        System.out.println(offersCalculator.report());
-        System.out.println(offersCalculator.calculate());
 
+        this.discounts = new Discounts();
 
+        //System.out.println(offersCalculator.report());
+        this.discounts = null;
+        this.discounts =  offersCalculator.calculate();
 
+    }
 
+    public Discounts getDiscounts(){
+        return this.discounts;
     }
 
 

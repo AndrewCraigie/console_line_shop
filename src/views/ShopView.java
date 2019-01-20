@@ -195,6 +195,7 @@ public class ShopView {
 
                 } else {
 
+
                     // If not menu digit then do command
                     switch(command){
                         case "end":
@@ -247,9 +248,10 @@ public class ShopView {
                 break;
             case "5":
                 // Price Current Basket
-                System.out.println("5 -----  Price Basket ------");
+                //System.out.println("5 -----  Price Basket ------");
                 shop.defaultPicker.priceBasket();
-
+                viewChoice = "4";
+                show(shop, viewChoice, scanner);
                 break;
             case "6":
                 // re-stock shop

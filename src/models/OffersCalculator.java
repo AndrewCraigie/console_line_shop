@@ -204,9 +204,9 @@ public class OffersCalculator {
 
     }
 
-    public String calculate(){
+    public Discounts calculate(){
 
-        StringBuilder sb = new StringBuilder();
+        Discounts discounts = new Discounts();
 
         for(ShopOffer so : offers) {
 
@@ -220,14 +220,20 @@ public class OffersCalculator {
             BigDecimal amountToReduceForOffer = applyOffer(so, minOfConditionMatches);
             String offerReduction = NumberFormat.getCurrencyInstance().format(amountToReduceForOffer);
 
+            StringBuilder sb = new StringBuilder();
             sb.append("* Can apply " + so.getName() + " offer to basket " + minOfConditionMatches + " times." + LS);
             sb.append("  reduction for this offer in this basket is: " );
             sb.append(offerReduction);
             sb.append(LS);
 
+            // DiscountLine - shopOffer, BigDecimal, message
+            DiscountLine discountLine = new DiscountLine(so, amountToReduceForOffer, sb.toString());
+            discounts.addDiscount(discountLine);
+
+
         }
 
-        return sb.toString();
+        return discounts;
 
     }
 
