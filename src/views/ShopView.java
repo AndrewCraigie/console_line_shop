@@ -5,7 +5,6 @@ import util.InputParser;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 
 public class ShopView {
@@ -222,8 +221,6 @@ public class ShopView {
 
                                 quantity = Integer.parseInt(value);
 
-                                //System.out.println("Quantity is: " + quantity);
-
                                 if(quantity > 0){
 
                                     shop.defaultPicker.addBasketStockLineByProductName(command, quantity);
@@ -248,7 +245,6 @@ public class ShopView {
                 break;
             case "5":
                 // Price Current Basket
-                //System.out.println("5 -----  Price Basket ------");
                 shop.defaultPicker.priceBasket();
                 viewChoice = "4";
                 show(shop, viewChoice, scanner);
@@ -256,8 +252,8 @@ public class ShopView {
             case "6":
                 // re-stock shop
                 shop.reStockShop();
-                System.out.println("6 ----- Shop Re-stocked ---");
-                System.out.println("Enter a menu number");
+                viewChoice = "2";
+                show(shop, viewChoice, scanner);
                 break;
 
         }

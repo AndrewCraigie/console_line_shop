@@ -5,6 +5,7 @@ import data.OffersStore;
 import data.SeedOffers;
 import data.SeedStock;
 import data.StockStore;
+
 import controllers.StockController;
 import repositories.OffersRepository;
 import repositories.StockRepository;
@@ -13,8 +14,6 @@ import views.PickerView;
 import views.ShopOffersView;
 import views.ShopStockView;
 import views.ShopView;
-
-import java.util.ArrayList;
 
 public class Shop {
 
@@ -43,13 +42,13 @@ public class Shop {
 
     public static Shop getInstance() {
 
+        // Shop is singleton
         if (shop == null) {
             shop = new Shop();
         }
 
         return shop;
     }
-
 
     private void persistDataStores() {
         stockStore.serializeStockLines();
@@ -168,7 +167,6 @@ public class Shop {
         initStockController();
         initOffersController();
 
-
         // Default picker for demo
         initDefaultPicker();
 
@@ -178,8 +176,6 @@ public class Shop {
         initPickerView();
         initShopView();
 
-
     }
-
 
 }

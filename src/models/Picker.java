@@ -3,7 +3,6 @@ package models;
 import controllers.OffersController;
 import controllers.StockController;
 
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -120,6 +119,8 @@ public class Picker {
             addMessage(msg);
         }
 
+        updateBasketTotals();
+
         return msg;
 
     }
@@ -131,10 +132,11 @@ public class Picker {
     public int removeItemFromBasket(String productName, int quantityToRemove){
 
         int numberRemoved = this.basket.removeItem(productName, quantityToRemove);
-        //System.out.println("Number removed from basket: " + numberRemoved);
 
         // Restock shop with removed items
         this.stockController.increaseStockInStore(productName, numberRemoved);
+
+        updateBasketTotals();
 
         return numberRemoved;
     }
@@ -218,6 +220,12 @@ public class Picker {
 
     public Discounts getDiscounts(){
         return this.discounts;
+    }
+
+    public void updateBasketTotals(){
+        this.basketOffers.clearOffers();
+        addValidOffersToBasket();
+        priceBasket();
     }
 
 
