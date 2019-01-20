@@ -9,7 +9,6 @@ import util.ConsoleUtil;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class PickerView {
 

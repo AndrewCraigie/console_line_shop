@@ -4,7 +4,6 @@ import data.OffersStore;
 import models.ShopOffer;
 
 import java.util.ArrayList;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class OffersRepository {

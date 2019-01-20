@@ -37,6 +37,13 @@ abstract public class StockLine implements Serializable {
             return false;
         }
 
+//        if(this.quantity > 0){
+//            quantity -= amount;
+//            return true;
+//        } else {
+//            return false;
+//        }
+
     }
 
     public int stockQuantity(){

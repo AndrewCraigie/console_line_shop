@@ -24,7 +24,12 @@ public class BasketOffers {
 
     public void updateOffers(ArrayList<ShopOffer> offersToAdd){
         clearOffers();
-        this.offers = offersToAdd;
+        if(offersToAdd != null){
+            if(offersToAdd.size() > 0){
+                this.offers = offersToAdd;
+            }
+        }
+
     }
 
     public ShopOffer findOffer(String offerName){

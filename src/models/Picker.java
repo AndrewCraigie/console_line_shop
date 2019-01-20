@@ -2,12 +2,15 @@ package models;
 
 import controllers.OffersController;
 import controllers.StockController;
+import javafx.beans.binding.StringBinding;
+import util.ConsoleUtil;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 public class Picker {
 
@@ -75,26 +78,58 @@ public class Picker {
 
         // Get basket stock line by product name
         BasketStockLine existingBasketStockLine = this.basket.findStockLine(productName);
+        ShopStockLine shopStockLine = stockController.getStockItemByProductName(productName);
 
-        // If it exists
-        if(existingBasketStockLine != null){
-            // Increment its quantity
-            existingBasketStockLine.increaseQuantity(quantity);
-        } else {
+        if(shopStockLine != null){
 
-            // It doesn't exist so create one and add it to basket
-            BasketStockLine basketStockLine = stockController.getBasketStockLine(productName, quantity);
-            // If it isn't a stock item then will return null
-            if(basketStockLine == null){
-                msg = "This shop does not sell " + productName;
+            if(stockController.isRequestedQuantityAvailable(shopStockLine, quantity)){
+
+                // If quantity is available add it
+                // If it exists
+                if(existingBasketStockLine != null){
+                    // Increment its quantity
+                    existingBasketStockLine.increaseQuantity(quantity);
+                } else {
+
+                    // It doesn't exist so create one and add it to basket
+                    BasketStockLine basketStockLine = stockController.getBasketStockLine(productName, quantity);
+
+                    // If it isn't a stock item then will return null
+                    if(basketStockLine == null){
+                        msg = "This shop does not sell " + productName;
+                        addMessage(msg);
+                    } else {
+
+                        this.basket.addStockLine(basketStockLine, quantity);
+
+                    }
+
+                }
+
             } else {
-                this.basket.addStockLine(basketStockLine, quantity);
-            }
 
+                msg = "Not enough " + shopStockLine.getProductLine().getName() + " in shop to add that quantity";
+                addMessage(msg);
+            }
+        } else {
+            msg = "This shop does not sell " + productName;
+            addMessage(msg);
         }
 
         return msg;
 
+    }
+
+    public void clearBasket(){
+        this.basket.clearBasketStockLines();
+    }
+
+    public boolean removeItemFromBasket(String productName, int quantityToRemove){
+        return this.basket.removeItem(productName, quantityToRemove);
+    }
+
+    public void addMessage(String msg){
+        this.messages.add(msg);
     }
 
     public void addBasketStockLines(String[] productNames){
@@ -105,14 +140,20 @@ public class Picker {
             String result = addBasketStockLineByProductName(product, 1);
 
             if(!result.equals("")){
-                this.messages.add(result);
+                addMessage(result);
             }
         }
 
     }
 
     public ArrayList<String> getMessages(){
-        return this.messages;
+
+        ArrayList<String> returnMessages = this.messages.stream()
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        this.messages.clear();
+
+        return returnMessages;
     }
 
     public BigDecimal basketSubTotal(){
@@ -131,6 +172,8 @@ public class Picker {
     public ArrayList<ShopOffer> getBasketOffers(){
         return this.basketOffers.getOffers();
     }
+
+    // TODO methods to calculate basket total accounting for discounts
 
 
 

@@ -1,3 +1,5 @@
+import models.Shop;
+
 public class ShopRunner {
 
     private static Shop shop = Shop.getInstance();
@@ -6,14 +8,14 @@ public class ShopRunner {
 
     public static void main(String[] args) {
 
-        shop.shopInit();
-        int startView = 1;
+        shop.shopInit(STOCK_STORE, OFFERS_STORE);
+        String startView = "1";
 
         // Populate basket if args have been passed
         if(args.length > 0){
 
          shop.populateDemoBasket(args);
-         startView = 4;  // Show populated basket
+         startView = "4";  // Show populated basket
 
         }
 

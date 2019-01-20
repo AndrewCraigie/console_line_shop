@@ -47,6 +47,8 @@ public class TestOffersBroker {
     private Basket basket2;
     private Basket basket3;
 
+    private BasketOffers basketOffers;
+
 
     private OffersBroker offersBroker1;
     private OffersBroker offersBroker2;
@@ -134,6 +136,10 @@ public class TestOffersBroker {
         offersBroker2.setStockController(stockController);
         offersBroker2.setOffersController(offersController);
         offersBroker2.setBasket(basket2);
+
+        basketOffers = new BasketOffers();
+        offersBroker1.setBasketOffers(basketOffers);
+        offersBroker2.setBasketOffers(basketOffers);
 
 
     }

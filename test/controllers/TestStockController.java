@@ -2,7 +2,6 @@ package controllers;
 
 import data.SeedStock;
 import data.StockStore;
-import models.Basket;
 import models.BasketStockLine;
 import models.ShopStockLine;
 import org.junit.Before;
@@ -69,7 +68,7 @@ public class TestStockController {
 
     @Test
     public void testGetBasketStockLineReturnsNoStockWhenQuantityTooHigh(){
-        // Shop stock quantity: 8
+        // models.Shop stock quantity: 8
         BasketStockLine applesBasketStockLine = stockController.getBasketStockLine("apples", 10);
         assertEquals(null, applesBasketStockLine);
     }

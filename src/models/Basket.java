@@ -123,23 +123,47 @@ public class Basket {
         return addItem(lineToAddTo, quantityToAdd);
     }
 
-    public boolean removeItem(BasketStockLine lineToRemoveFrom, int quantityToRemove){
-        if(lineToRemoveFrom != null){
-            return lineToRemoveFrom.decreaseQuantity(quantityToRemove);
+    public boolean checkStockLineForRemoval(BasketStockLine basketStockLine){
+
+        if(basketStockLine != null){
+            // Check if line has zero quantity
+            if(basketStockLine.stockQuantity() <= 0){
+                // Remove stock line from basket
+                return removeStockLine(basketStockLine);
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
+
     }
 
-    public boolean removeItem(int productId, int quantityToAdd){
+
+    public boolean removeItem(BasketStockLine lineToRemoveFrom, int quantityToRemove){
+
+        if(lineToRemoveFrom != null){
+            boolean decreased = lineToRemoveFrom.decreaseQuantity(quantityToRemove);
+            checkStockLineForRemoval(lineToRemoveFrom);
+            return decreased;
+        } else {
+            return false;
+        }
+
+    }
+
+    public boolean removeItem(int productId, int quantityToRemove){
         BasketStockLine lineToAddTo = this.findStockLine(productId);
-        return removeItem(lineToAddTo, quantityToAdd);
+        return removeItem(lineToAddTo, quantityToRemove);
     }
 
-    public boolean removeItem(String productName, int quantityToAdd){
+    public boolean removeItem(String productName, int quantityToRemove){
         BasketStockLine lineToAddTo = this.findStockLine(productName);
-        return removeItem(lineToAddTo, quantityToAdd);
+        return removeItem(lineToAddTo, quantityToRemove);
     }
 
 
+    public void clearBasketStockLines() {
+        this.basketStockLines.clear();
+    }
 }

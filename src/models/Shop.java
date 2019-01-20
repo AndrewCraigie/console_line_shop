@@ -1,28 +1,22 @@
+package models;
+
 import controllers.OffersController;
 import data.OffersStore;
 import data.SeedOffers;
 import data.SeedStock;
 import data.StockStore;
 import controllers.StockController;
-import models.Basket;
-import models.BasketOffers;
-import models.OffersBroker;
-import models.Picker;
 import repositories.OffersRepository;
 import repositories.StockRepository;
 import util.FileUtils;
 import views.PickerView;
 import views.ShopOffersView;
-import views.ShopView;
 import views.ShopStockView;
-
-import java.util.Scanner;
-
+import views.ShopView;
 
 public class Shop {
 
     private static Shop shop = null;
-
 
     private StockStore stockStore;
     private StockRepository stockRepository;
@@ -40,9 +34,6 @@ public class Shop {
     public Picker defaultPicker;
     public Basket defaultBasket;
 
-    private Scanner scanner;
-
-    private int viewChoice = 0;
 
     public Shop() {
         // TODO allow initialization with config file
@@ -57,24 +48,13 @@ public class Shop {
         return shop;
     }
 
-    private String getStockStorePath() {
-
-        return FileUtils.storePath(ShopRunner.STOCK_STORE);
-
-    }
-
-    private String getOffersStorePath() {
-
-        return FileUtils.storePath(ShopRunner.OFFERS_STORE);
-
-    }
 
     private void persistDataStores() {
         stockStore.serializeStockLines();
         offersStore.serializeOfferLines();
     }
 
-    private void stop() {
+    public void stop() {
 
         // Save stores before exiting
         System.out.println("Saving Stock Data...");
@@ -85,21 +65,9 @@ public class Shop {
         System.exit(0);
     }
 
-    protected void run(int startView) {
+    public void run(String startView) {
 
-        viewChoice = startView;
-
-        shopView.showHeader();
-        shopView.show(viewChoice);
-
-        do {
-
-            viewChoice = scanner.nextInt();
-            shopView.show(viewChoice);
-
-        } while (viewChoice != 0);
-
-        stop();
+        shopView.run(shop, startView);
 
     }
 
@@ -112,7 +80,7 @@ public class Shop {
             // In case file cannot be accessed/deserialized
             stockStore.setStockLines(SeedStock.shopStockLines());
         } else {
-            System.out.println("Shop Stock Loaded successfully...");
+            System.out.println("models.Shop Stock Loaded successfully...");
         }
 
     }
@@ -123,7 +91,7 @@ public class Shop {
         boolean offersDataSet = offersStore.deserializeStockLines();
 
         if(offersDataSet){
-            System.out.println("Shop offers loaded successfully...");
+            System.out.println("models.Shop offers loaded successfully...");
         } else {
             System.out.println("Problem loading offers. Working with defaults.");
             offersStore.setOfferLines(SeedOffers.shopOfferLines());
@@ -160,11 +128,7 @@ public class Shop {
     }
 
     private void initShopView() {
-        shopView = new ShopView(shopStockView, shopOffersView, pickerView);
-    }
-
-    private void initScanner() {
-        scanner = new Scanner(System.in);
+        shopView = new ShopView(shop, shopStockView, shopOffersView, pickerView);
     }
 
     private void initDefaultPicker() {
@@ -172,16 +136,16 @@ public class Shop {
         defaultPicker = new Picker(stockController, offersController, defaultBasket, new OffersBroker(), new BasketOffers());
     }
 
-    protected void populateDemoBasket(String[] args) {
+    public void populateDemoBasket(String[] args) {
 
         defaultPicker.addBasketStockLines(args);
 
     }
 
-    public void shopInit() {
+    public void shopInit(String shopStore, String offersStore) {
 
-        String stockStoreDataFile = getStockStorePath();
-        String offersStoreDataFile = getOffersStorePath();
+        String stockStoreDataFile = FileUtils.storePath(shopStore);
+        String offersStoreDataFile = FileUtils.storePath(offersStore);
 
         // Data stores
         // Initialize Stock Store
@@ -198,8 +162,6 @@ public class Shop {
         initStockController();
         initOffersController();
 
-        // Scanner for Command Line interaction
-        initScanner();
 
         // Default picker for demo
         initDefaultPicker();

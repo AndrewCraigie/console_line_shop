@@ -1,6 +1,12 @@
 package views;
 
-import util.ConsoleUtil;
+import models.Shop;
+import util.InputParser;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
+import java.util.regex.Pattern;
+
 
 public class ShopView {
 
@@ -10,12 +16,42 @@ public class ShopView {
     private ShopOffersView shopOffersView;
     private PickerView pickerView;
 
-    public ShopView(ShopStockView shopStockView,
+    private Scanner scanner;
+    private String viewChoice = "0";
+
+    public ShopView(Shop shop,
+                    ShopStockView shopStockView,
                     ShopOffersView shopOffersView,
                     PickerView pickerView){
         this.shopStockView = shopStockView;
         this.shopOffersView = shopOffersView;
         this.pickerView = pickerView;
+    }
+
+    public void run(Shop shop, String startView){
+
+        // Scanner for Command Line interaction
+        scanner = new Scanner(System.in);
+
+        viewChoice = startView;
+
+        showHeader();
+        show(shop, viewChoice, scanner);
+
+        do {
+
+            try{
+                viewChoice = scanner.next();
+
+            } catch (InputMismatchException e){
+                System.out.println(e.getMessage());
+                viewChoice = "1";
+            }
+            scanner.nextLine();
+            show(shop, viewChoice, scanner);
+
+        } while (!viewChoice.equals("0"));
+
     }
 
     private String header(){
@@ -55,7 +91,7 @@ public class ShopView {
         sb.append(LS);
         sb.append("|     3. Current Offers          |");
         sb.append(LS);
-        sb.append("|     4. Show Current Basket     |");
+        sb.append("|     4. View Basket             |");
         sb.append(LS);
         sb.append("|     5. Price Current Basket    |");
         sb.append(LS);
@@ -69,7 +105,7 @@ public class ShopView {
     private String welcome(){
 
         StringBuilder sb = new StringBuilder();
-        sb.append(" Welcome to the Shop");
+        sb.append(" Welcome to the models.Shop");
         sb.append(LS);
         sb.append("1 ----- Instructions -----");
         sb.append(LS);
@@ -92,39 +128,137 @@ public class ShopView {
         System.out.println(menu());
     }
 
-    public void show(int choice){
+    public void show(Shop shop, String choice, Scanner scanner){
 
-        ConsoleUtil.clearConsole();
         showMenu();
         switch (choice) {
-            case 0:
+            case "0":
                 // Exit
+                scanner.close();
+                shop.stop();
                 return;
-            case 1:
+            case "1":
                 // Show welcome
                 System.out.println(welcome());
                 break;
-            case 2:
+            case "2":
                 // Show products list
                 System.out.println(shopStockView.listStock());
                 break;
-            case 3:
+            case "3":
                 // Show offers list
                 System.out.println(shopOffersView.listOffers());
                 break;
-            case 4:
-                // Show current basket
+            case "4":
+                // View basket
                 System.out.println(pickerView.listBasketStockLines());
+
+                scanner.reset();
+                String input = scanner.next().toLowerCase();
+
+                // e.g.
+                // [apples, 2]
+                // [clear]
+                String[] parsedInput = InputParser.parseBasketInput(input);
+
+                String command;
+                String value = "";
+
+                if(parsedInput.length > 0){
+                    command = parsedInput[0];
+                } else {
+                    command = "4";
+                }
+
+                if(parsedInput.length > 1){
+
+                    if(InputParser.validQuantityValue(parsedInput[1])){
+                        value = parsedInput[1];
+                    } else {
+                        shop.defaultPicker.addMessage("Only numbers are valid for quantities");
+                    }
+
+                } else {
+                    // Default to adding one item
+                    value = "1";
+                }
+
+
+                // Check if command is digit within menu range
+                boolean isMenuDigit = InputParser.isMenuDigit(command);
+
+                // If choice is menu digit then show
+                if(isMenuDigit){
+                    System.out.println("Is menu digit");
+                    show(shop, command, scanner);
+                } else {
+                    // If not menu digit then do command
+                    switch(command){
+                        case "end":
+                            System.out.println("end");
+                            scanner.reset();
+                            viewChoice = "4";
+                            show(shop, viewChoice, scanner);
+                            break;
+                        case "clear":
+                            System.out.println("clear");
+                            shop.defaultPicker.clearBasket();
+                            scanner.reset();
+                            viewChoice = "4";
+                            show(shop, viewChoice, scanner);
+                            break;
+                        default:
+
+                            // Add or remove product based on command and quantity
+
+                            int quantity = 1;
+                            try{
+
+                                quantity = Integer.parseInt(value);
+
+                                System.out.println("Quantity is: " + quantity);
+
+                                if(quantity > 0){
+
+                                    shop.defaultPicker.addBasketStockLineByProductName(command, quantity);
+                                }
+
+                                if(quantity < 0){
+                                    // Remove negative from quantity
+                                    shop.defaultPicker.removeItemFromBasket(command, Math.abs(quantity));
+                                }
+
+                            } catch(NumberFormatException e){
+                                shop.defaultPicker.addMessage("Invalid quantity");
+                            }
+
+                            scanner.reset();
+                            viewChoice = "4";
+                            show(shop, viewChoice, scanner);
+                    }
+                }
+
+
+
+
                 break;
-            case 5:
+            case "5":
                 // Price Current Basket
+                // TODO calculate basket totals and output
                 System.out.println("5 -----  Price Basket ------");
                 System.out.println("TODO calculate discounts create output");
+
                 break;
-            case 6:
+            case "6":
                 // Build new basket
+                // TODO create loop to build new basket
                 System.out.println("6 ------  New Basket ------");
                 System.out.println("..loop and gather input");
+
+
+
+
+
                 break;
 
         }

@@ -49,6 +49,7 @@ public class OffersBroker {
     public ArrayList<ShopOffer> getOffersForProducts(){
 
         ArrayList<ShopOffer> productOffers = new ArrayList<>();
+        ArrayList<ShopOffer> validOffers = new ArrayList<>();
 
         // Get all the offers for each product
         for(BasketStockLine bsl : this.basket.getStockLines()){
@@ -77,14 +78,23 @@ public class OffersBroker {
             if(productOffers.size() > 0 ){
 
                 ArrayList<ShopOffer> filteredList = filterOffersList(productOffers);
-                ArrayList<ShopOffer> validOffers =filterOnlyValidOffers(filteredList);
-                this.basketOffers.updateOffers(validOffers);
+                validOffers = filterOnlyValidOffers(filteredList);
 
-                return validOffers;
+                // TODO what's happening here??
+                if(validOffers != null){
+
+                    this.basketOffers.updateOffers(validOffers);
+                    return validOffers;
+
+                } else {
+                    return null;
+                }
+
 
             } else {
                 return null;
             }
+
         } else {
             return null;
         }

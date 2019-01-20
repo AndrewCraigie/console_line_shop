@@ -6,6 +6,7 @@ public class ConsoleUtil {
     {
         try
         {
+
             final String os = System.getProperty("os.name");
 
             if (os.contains("Windows"))

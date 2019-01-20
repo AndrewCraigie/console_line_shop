@@ -53,7 +53,7 @@ public class StockController {
 
     }
 
-    private boolean isRequestedQuantityAvailable(ShopStockLine shopStockLine, int quantity){
+    public boolean isRequestedQuantityAvailable(ShopStockLine shopStockLine, int quantity){
 
         boolean isAvailable = ((shopStockLine.stockQuantity() >= quantity) && (!shopStockLine.outOfStock()));
         return isAvailable;
